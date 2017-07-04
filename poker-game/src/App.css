@@ -1,0 +1,13 @@
+.the-table{
+  background: green;
+}
+
+.card{
+  min-height:  249px;
+  min-width: 179px;
+  /* background: url('/cards/deck.png') */
+}
+
+.playerBet{
+  font-size: 50px;
+}
