@@ -2,36 +2,56 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import Chart from '../components/chart';
 import GoogleMap from '../components/google_map';
-export class WeatherList extends Component{
-	renderWeather(cityData){
-		const name=cityData.city.name;
-		const temps=cityData.list.map(weather => weather.main.temp);
-		const pressures=cityData.list.map(weather => weather.main.pressure);
-		const humidities=cityData.list.map(weather => weather.main.humidity);
-		const { lon, lat } = cityData.city.coord;
-		return (
-			<tr key={name}>
-				<td><GoogleMap lon={lon} lat={lat}/></td>
-				<td><Chart data={temps} color="orange" units='K'/></td>
-				<td><Chart data={pressures} color="green" units='hPa'/></td>
-				<td><Chart data={humidities} color="black" units='%'/></td>
-			</tr>
-		)
+import {Link} from 'react-router-dom';
+
+
+
+class WeatherList extends Component{
+	constructor(props) {
+		super(props);
+		
+		this.renderWeather = this.renderWeather.bind(this);
+	}
+
+
+
+	renderWeather(){
+		var tBody = [];
+		this.props.weather.map((cityData, index)=>{
+			const name=cityData.city.name;
+			const temps=cityData.list.map(weather => weather.main.temp);
+			const pressures=cityData.list.map(weather => weather.main.pressure);
+			const humidities=cityData.list.map(weather => weather.main.humidity);
+			const { lon, lat } = cityData.city.coord;
+			tBody.push(
+				<tr key={name}>
+					<td><GoogleMap lon={lon} lat={lat}/></td>
+					<td><Chart data={temps} color="orange" units='K'/></td>
+					<td><Chart data={pressures} color="green" units='hPa'/></td>
+					<td><Chart data={humidities} color="black" units='%'/></td>
+				</tr>
+			)
+		})
+		// console.log(this.props.match);
+		// if (this.props.match.params.category == "temps"){
+		// 	tBody.
+		// }
+		return tBody;
 	}
 	render(){
-		console.log(this.props.weather);
+		// console.log(this.props.weather);
 		return(
 			<table className="table table-hover">
 				<thead>
 					<tr>
 						<th>City</th>
-						<th>Temp(K)</th>
-						<th>Pressure(hPa)</th>
-						<th>Humidity(%)</th>
+						<th><Link to="/ordered/:temps">Temp(K)</Link></th>
+						<th><Link to="/ordered/:pressure">Pressure(hPa)</Link></th>
+						<th><Link to="/ordered/:humidity">Humidity(%)</Link></th>
 					</tr>
 				</thead>
 				<tbody>
-					{this.props.weather.map(this.renderWeather)}
+					{this.renderWeather()}
 				</tbody>
 			</table>
 		)
